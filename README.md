@@ -7,6 +7,7 @@ Terraform module to create Aviatrix Edge in Aviatrix Controller for Equinix Fabr
 Please make sure you have:
 - Aviatrix Controller 6.9 or above
 - AWS access key id and secret access key
+- Azure account credentials
 - Equinix API client id and secret
 
 See file ```terraform.tfvars.examples``` for a sample of tfvars file. To run this project, you will need to set the following environment variables or provider settings.
@@ -15,6 +16,10 @@ See file ```terraform.tfvars.examples``` for a sample of tfvars file. To run thi
 export AWS_ACCESS_KEY_ID="<aws-access-key-id>"
 export AWS_SECRET_ACCESS_KEY="<aws-access-key>"
 export AWS_REGION="us-east-1"
+export ARM_SUBSCRIPTION_ID="aaaa-1111-bbbb-2222-cccc-3333"
+export ARM_TENANT_ID="aaaa-1111-bbbb-2222-cccc-3333"
+export ARM_CLIENT_ID="aaaa-1111-bbbb-2222-cccc-3333"
+export ARM_CLIENT_SECRET="A1b2C3d4E5"
 export AVIATRIX_CONTROLLER_IP="<aviatrix-controller-fqdn-or-ip>"
 export AVIATRIX_USERNAME="<username>"
 export AVIATRIX_PASSWORD="<password>"
@@ -39,6 +44,14 @@ Provision Aviatrix Edge Gateways from Equinix Fabric Portal and wait until provi
 ```bash
 export TF_VAR_update_egress_ip=true
 export TF_VAR_create_device_links=true
+terraform init
+terraform plan
+terraform apply -auto-approve
+```
+
+To configure edge attachment and BGPoLAN, set the following terraform variables in tfvars or environment variables to true.
+
+```bash
 export TF_VAR_attach_edge_aws=true
 export TF_VAR_attach_edge_azure=true
 export TF_VAR_create_transit_peering=true

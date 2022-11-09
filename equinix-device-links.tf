@@ -1,10 +1,10 @@
 data "equinix_network_device" "aviatrix_edge" {
-  count = var.create_device_links && var.update_egress_ip && var.create_aviatrix_edge ? 1 : 0
+  count = var.update_egress_ip && var.create_aviatrix_edge ? 1 : 0
   name  = var.edge_gw_name
 }
 
 data "equinix_network_device" "iperf" {
-  count = var.create_device_links && var.update_egress_ip && var.create_edge_iperf ? 1 : 0
+  count = var.update_egress_ip && var.create_edge_iperf ? 1 : 0
   name  = var.iperf_gw_name
 }
 
