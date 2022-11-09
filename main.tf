@@ -84,5 +84,38 @@ locals {
     end
     !
     EOT
+
+  guestshell_config = <<EOT
+    !
+    interface VirtualPortGroup0
+     vrf forwarding LAN
+     ip address 192.168.0.1 255.255.255.0
+     ip nat inside
+    !
+    !
+    ip access-list extended NAT-a
+     10 permit ip 192.168.0.0 0.0.0.255 any
+    !
+    ip nat inside source list NAT-a interface GigabitEthernet2 overload
+    !
+    interface VirtualPortGroup0
+     ip address 192.168.0.1 255.255.255.0
+     ip nat inside
+    !
+    interface GigabitEthernet2
+     ip nat outside
+    !
+    app-hosting appid guestshell
+     app-vnic gateway1 virtualportgroup 0 guest-interface 0
+      guest-ipaddress 192.168.0.2 netmask 255.255.255.0
+     app-default-gateway 192.168.0.1 guest-interface 0
+     app-resource profile custom
+      cpu 1500
+      memory 512
+     name-server0 8.8.8.8
+     name-server1 8.8.4.4
+    end
+    !
+    EOT
 }
 

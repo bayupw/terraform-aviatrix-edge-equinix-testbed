@@ -17,3 +17,8 @@ output "router_ssh_command" {
 output "router_ssh_password" {
   value = var.create_router ? equinix_network_device.this[0].vendor_configuration["adminPassword"] : ""
 }
+
+
+output "router_guestshell_config" {
+  value = var.create_router ? try(local.guestshell_config, "") : ""
+}

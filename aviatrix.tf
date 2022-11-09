@@ -13,6 +13,9 @@ module "aws_transit" {
   ha_gw                  = false
   enable_transit_firenet = false
   local_as_number        = var.aws_transit_asn
+  enable_segmentation    = true
+  learned_cidr_approval  = true
+  single_az_ha           = false
 }
 
 module "aws_spoke" {
@@ -29,6 +32,7 @@ module "aws_spoke" {
   instance_size = "t3.micro"
   transit_gw    = try(module.aws_transit[0].transit_gateway.gw_name, "")
   ha_gw         = false
+  single_az_ha  = false
 
   depends_on = [module.aws_transit]
 }
@@ -48,6 +52,9 @@ module "azure_transit" {
   ha_gw                  = false
   enable_transit_firenet = false
   local_as_number        = var.azure_transit_asn
+  enable_segmentation    = true
+  learned_cidr_approval  = true
+  single_az_ha           = false
 }
 
 module "azure_spoke" {
@@ -64,6 +71,7 @@ module "azure_spoke" {
   instance_size = "Standard_B1ms"
   transit_gw    = try(module.azure_transit[0].transit_gateway.gw_name, "")
   ha_gw         = false
+  single_az_ha  = false
 
   depends_on = [module.azure_transit]
 }
@@ -86,6 +94,7 @@ resource "aviatrix_edge_spoke" "edge" {
   local_as_number                = var.edge_asn
   enable_edge_transitive_routing = true
   management_egress_ip_prefix    = var.update_egress_ip ? "${data.equinix_network_device.aviatrix_edge[0].ssh_ip_address}/32" : null
+  enable_learned_cidrs_approval  = true
 }
 
 resource "time_sleep" "edge" {
@@ -180,8 +189,9 @@ resource "aviatrix_edge_spoke_transit_attachment" "edge_to_aws" {
 resource "aviatrix_edge_spoke_transit_attachment" "edge_to_azure" {
   count = var.attach_edge_azure ? 1 : 0
 
-  spoke_gw_name   = aviatrix_edge_spoke.edge[0].gw_name
-  transit_gw_name = module.azure_transit[0].transit_gateway.gw_name
+  spoke_gw_name               = aviatrix_edge_spoke.edge[0].gw_name
+  transit_gw_name             = module.azure_transit[0].transit_gateway.gw_name
+  enable_over_private_network = true
 }
 
 resource "aviatrix_transit_gateway_peering" "this" {

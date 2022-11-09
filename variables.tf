@@ -64,6 +64,12 @@ variable "create_edge_iperf" {
   default     = false
 }
 
+variable "create_aws_ec2" {
+  description = "Set to true to create an EC2 instance in spoke."
+  type        = bool
+  default     = false
+}
+
 variable "attach_edge_aws" {
   description = "Set to true to attach Edge to AWS."
   type        = bool

@@ -1,6 +1,14 @@
-# Terraform Aviatrix Edge for Equinix Fabric
+# Terraform Aviatrix Edge on Equinix Fabric
 
-Terraform module to create Aviatrix Edge in Aviatrix Controller for Equinix Fabric.
+Terraform code to create the following resources which can be controlled via bool variables:
+- WAN/LAN router in Equinix Fabric
+- AWS Direct Connect
+- Azure Express Route
+- Aviatrix Edge
+- Equinix Network Edge Device Links
+- AWS EC2 test instance
+
+![Aviatrix Edge on Equinix Topology](images/terraform-aviatrix-edge-equinix-testbed.png "Aviatrix Edge on Equinix Topology")
 
 ## Prerequisites
 
